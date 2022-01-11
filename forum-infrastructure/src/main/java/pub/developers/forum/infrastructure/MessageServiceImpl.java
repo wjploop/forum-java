@@ -3,6 +3,7 @@ package pub.developers.forum.infrastructure;
 import org.springframework.stereotype.Service;
 import pub.developers.forum.common.enums.MessageChannelEn;
 import pub.developers.forum.common.enums.MessageContentTypeEn;
+import pub.developers.forum.common.enums.MessageReadEn;
 import pub.developers.forum.domain.entity.Message;
 import pub.developers.forum.domain.repository.MessageRepository;
 import pub.developers.forum.domain.service.MailService;
