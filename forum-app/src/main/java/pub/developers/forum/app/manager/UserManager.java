@@ -27,6 +27,7 @@ import pub.developers.forum.common.enums.UserRoleEn;
 import pub.developers.forum.common.model.PageResult;
 import pub.developers.forum.domain.entity.OptLog;
 import pub.developers.forum.domain.entity.User;
+import pub.developers.forum.domain.service.CacheService;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -45,8 +46,12 @@ public class UserManager extends AbstractLoginManager {
     @Resource
     private OptLogRepository optLogRepository;
 
+    @Resource
+    private CacheService cacheService;
+
     /**
      * 邮箱 + 密码 登录
+     *
      * @param request
      * @return
      */
@@ -123,6 +128,7 @@ public class UserManager extends AbstractLoginManager {
 
     /**
      * 获取 token 对应用户详情
+     *
      * @param token
      * @return
      */
@@ -142,6 +148,7 @@ public class UserManager extends AbstractLoginManager {
 
     /**
      * 用户注册
+     *
      * @param request
      */
     @Transactional
@@ -149,6 +156,12 @@ public class UserManager extends AbstractLoginManager {
         // 判断邮箱是否已经被注册
         User user = userRepository.getByEmail(request.getEmail());
         CheckUtil.isNotEmpty(user, ErrorCodeEn.USER_REGISTER_EMAIL_IS_EXIST);
+
+        // 判断验证码
+        String validCode = cacheService.get(CacheBizTypeEn.VALID_CODE, request.getEmail());
+        System.out.println("request code " + request.getCode() + " and current code " + validCode + " valid " + request.getCode().equals(validCode));
+        CheckUtil.isEmpty(validCode, ErrorCodeEn.VALID_CODE_ERROR);
+        CheckUtil.isFalse(request.getCode().equals(validCode), ErrorCodeEn.VALID_CODE_ERROR);
 
         User registerUser = UserTransfer.toUser(request);
 
@@ -163,6 +176,7 @@ public class UserManager extends AbstractLoginManager {
 
     /**
      * 登出
+     *
      * @param request
      */
     public void logout(UserTokenLogoutRequest request) {
@@ -177,6 +191,7 @@ public class UserManager extends AbstractLoginManager {
 
     /**
      * 用户更新基本信息
+     *
      * @param request
      */
     @IsLogin
@@ -198,6 +213,7 @@ public class UserManager extends AbstractLoginManager {
 
     /**
      * 更新登录密码
+     *
      * @param request
      */
     @IsLogin

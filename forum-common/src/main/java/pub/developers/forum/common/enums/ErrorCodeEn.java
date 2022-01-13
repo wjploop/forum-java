@@ -43,6 +43,7 @@ public enum ErrorCodeEn {
     CONTENT_TYPE_NOT_EXIST(7995, "不存在的内容类型"),
     POSTS_SAVE_FAIL(7994, "帖子保存失败"),
     POSTS_NOT_EXIST(7993, "帖子不存在"),
+    VALID_CODE_ERROR(7992, "验证码错误"),
 
     COMMENT_NOT_EXIST(1504, "评论不存在"),
     COMMENT_POSTS_NOT_EXIST(1504, "评论帖子不存在"),

@@ -19,6 +19,8 @@ public enum MessageTypeEn {
     COMMENT_FAQ("COMMENT_FAQ", "评论问答"),
 
     FOLLOW_USER("FOLLOW_USER", "用户关注"),
+
+    USER_REGISTER_SEND_CODE("user_register_send_code","发送验证码")
     ;
     private String value;
     private String desc;

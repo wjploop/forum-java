@@ -23,4 +23,5 @@ public class IdValue implements Serializable {
 
     private IdValueTypeEn type;
 
+    public static IdValue SystemId = new IdValue("carrot_fight@163.com", IdValueTypeEn.EMAIL);
 }

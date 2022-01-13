@@ -1,5 +1,6 @@
 package pub.developers.forum.app.listener;
 
+import io.micrometer.core.instrument.util.JsonUtils;
 import org.springframework.stereotype.Component;
 import pub.developers.forum.common.enums.*;
 import pub.developers.forum.common.support.EventBus;
@@ -29,24 +30,18 @@ public class NotifyAdminUserRegisterListener extends EventBus.EventHandler<User>
     @Override
     public void onMessage(User user) {
 
-        // 发送消息通知，邮箱连接
+        // 发送消息通知
         messageService.send(Message.builder()
-                .channel(MessageChannelEn.MAIL)
+                .channel(MessageChannelEn.STATION_LETTER)
                 .type(MessageTypeEn.USER_REGISTER_NOTIFY_ADMIN)
-                .sender(IdValue.builder()
-                        .id("wjploop@163.com")
-                        .type(IdValueTypeEn.EMAIL)
-                        .build())
-                .receiver(
-                        IdValue.builder()
-                        .id(user.getEmail())
-                        .type(IdValueTypeEn.EMAIL)
-                        .build())
-                .title("欢迎来到英雄联盟")
+                .sender(IdValue.SystemId)
+                .receiver(IdValue.SystemId)
+                .title("新用户注册了")
                 .contentType(MessageContentTypeEn.TEXT)
                 .read(MessageReadEn.NO)
-                .content("请点击该链接确认注册 www.baidu.com")
+                .content(user.toString())
                 .build());
+
         //
     }
 }

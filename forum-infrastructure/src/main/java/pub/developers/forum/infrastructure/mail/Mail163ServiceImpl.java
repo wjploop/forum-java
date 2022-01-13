@@ -94,20 +94,26 @@ public class Mail163ServiceImpl implements MailService {
             message.saveChanges();
             Transport.send(message);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new BizException(ErrorCodeEn.MESSAGE_SYSTEM_MAIL_SEND_FAIL);
         }
     }
 
     private Properties getProperties() {
 //        Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+//        Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 
         Properties props = System.getProperties();
         props.setProperty("mail.smtp.host", host);
-        props.setProperty("mail.smtp.port", port);
+        props.setProperty("mail.transport.port", port);
+//        props.setProperty("mail.smtp.port", port);
         props.setProperty("mail.smtp.socketFactory.port", socketFactoryPort);
         props.setProperty("mail.smtp.auth", auth);
+        props.setProperty("mail.smtp.ssl.enable", "true");
         props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.setProperty("mail.smtp.socketFactory.fallback", "false");
+//        props.setProperty("mail.smtp.ssl.protocols","")
+        props.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
         return props;
     }
 }

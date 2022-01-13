@@ -2,11 +2,9 @@ package pub.developers.forum.portal.controller.rest;
 
 import org.springframework.web.bind.annotation.*;
 import pub.developers.forum.api.model.ResultModel;
-import pub.developers.forum.api.request.user.UserEmailLoginRequest;
-import pub.developers.forum.api.request.user.UserRegisterRequest;
-import pub.developers.forum.api.request.user.UserUpdateInfoRequest;
-import pub.developers.forum.api.request.user.UserUpdatePwdRequest;
+import pub.developers.forum.api.request.user.*;
 import pub.developers.forum.api.service.UserApiService;
+import pub.developers.forum.api.service.ValidCodeService;
 import pub.developers.forum.common.constant.Constant;
 import pub.developers.forum.portal.support.WebUtil;
 
@@ -25,6 +23,17 @@ public class UserRestController {
 
     @Resource
     private UserApiService userApiService;
+
+    @Resource
+    private ValidCodeService validCodeService;
+
+    @PostMapping("/send-code")
+    public ResultModel<String> sendCode(@RequestBody ValidCodeRequest request, HttpServletRequest servletRequest) {
+        request.setIp(WebUtil.requestIp(servletRequest));
+        request.setUa(WebUtil.requestUa(servletRequest));
+
+        return validCodeService.sendMailCode(request);
+    }
 
     @PostMapping("/register")
     public ResultModel<String> register(@RequestBody UserRegisterRequest request, HttpServletRequest servletRequest, HttpServletResponse response) {
